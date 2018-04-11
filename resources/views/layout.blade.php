@@ -19,36 +19,32 @@
 			background-color: rgba(29,210,101,0.78);
 		}
 
-		#contactData_wrapper > div:first-child {
-			width: 50%;
-		}
-		#contactData_wrapper > div:nth-child(3) {
-     
-			width: 50%;
-		}
+		
 
 	</style>
 </head>
 <body>
 <div class="container">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
 @yield('header')
 <div class="tab-content">
     <div id="recent" class="tab-pane fade in active">
-
-
-@yield('content1')
+		@yield('content1')
 	</div>
 
-<div id="contactList" class="tab-pane fade">
-@yield('content2')
-</div>
+	<div id="contactList" class="tab-pane fade">
+		@yield('content2')
+	</div>
 
 
-<div id="AddContact" class="tab-pane fade">
-@yield('content3')
-</div>
+	<div id="AddContact" class="tab-pane fade">
+		@yield('content3')
+	</div>
 
 </div>
+</div>
+<div class="col-md-3"></div>
 </div>
 </body>
 </html>

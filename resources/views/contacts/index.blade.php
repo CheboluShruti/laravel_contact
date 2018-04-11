@@ -3,7 +3,7 @@
 @section('header')
 
 <h2>Contacts Table</h2>
-<div class="bg-green-color" style="width:50%">
+<div class="bg-green-color" style="width:100%">
   <ul class="nav nav-tabs">
     <li class="active" id="RecentCall"><a data-toggle="tab" href="#recent">Recent</a></li>
     <li id="Contactstable"><a data-toggle="tab" href="#contactList">Contact List</a></li>
@@ -19,7 +19,7 @@
 
                                                                                       
     
-  <table id="recentData" class="table table-striped table-bordered" style="width:50%">
+  <table id="recentData" class="table table-striped table-bordered" style="width:100%">
     <thead>
       <tr>
         
@@ -57,7 +57,7 @@
 
                                                                                       
   
-  <table id="contactData" class="table table-striped table-bordered" style="width:50%">
+  <table id="contactData" class="table table-striped table-bordered" style="width:100%">
     <thead>
       <tr>
         

@@ -19,6 +19,7 @@
 
 	<div class="col-md-3"></div>
 		<div class="col-md-6">
+      <h2 align="center">Edit Contact</h2>
 	 <form class="form-horizontal" action="/edit_contact_details" enctype="multipart/form-data"  name="edit_contact_form" id="edit_contact_form" method="POST">
 	 	{{ csrf_field() }}
     <div class="form-group">
@@ -65,7 +66,7 @@
     <input type="hidden" value="{{$edit_data->id}}" name="ContactID">
     <div class="form-group">        
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Edit</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button>   <a href="{{ url('/') }}" class="btn btn-success" style="float:right;"><i class="fa fa-reply"></i> Back</a>
       </div>
     </div>
 
