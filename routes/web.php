@@ -15,4 +15,7 @@ Route::get('/', 'ContactsController@index');
 
 
 Route::get('/edit/{contactID}', 'ContactsController@edit_contact');
+Route::get('/see_details/{cID}', 'ContactsController@view_contact');
+
 Route::post('/edit_contact_details', 'ContactsController@update_contact');
+Route::post('/add_contact_details', 'ContactsController@add_contact');
