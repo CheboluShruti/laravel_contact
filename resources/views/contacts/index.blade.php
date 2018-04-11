@@ -92,7 +92,7 @@
 
 @section('content3')
 
-
+  <h2 align="center">Add Contact</h2>
  <form class="form-horizontal" action="/add_contact_details" enctype="multipart/form-data"  name="add_contact_form" id="edit_contact_form" method="POST">
     {{ csrf_field() }}
     <div class="form-group">
