@@ -62,7 +62,9 @@
         
       </div>
     </div>
-    
+    @if ($errors->get('ProfileImg')==true)
+     <div class="alert alert-danger">{{ $errors->first('ProfileImg') }}</div>
+     @endif
     <input type="hidden" value="{{$edit_data->id}}" name="ContactID">
     <div class="form-group">        
       <div class="col-sm-offset-2 col-sm-10">
