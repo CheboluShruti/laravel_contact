@@ -162,12 +162,16 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        
 
 
         /*
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        Cornford\Googlmapper\MapperServiceProvider::class,
+        FarhanWazir\GoogleMaps\GMapsServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -226,6 +230,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Mapper' => Cornford\Googlmapper\Facades\MapperFacade::class,
+        'GMaps' => FarhanWazir\GoogleMaps\Facades\GMapsFacade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         
         
 

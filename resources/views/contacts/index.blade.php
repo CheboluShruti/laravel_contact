@@ -43,7 +43,7 @@
 @endif" width="80px" height="80px"></td>
         <td style="width:70%"><p>{{ $rec_data->name }}</p><p>{{ \Carbon\Carbon::parse($rec_data->updated_at)->diffForHumans()  }}</p></td>
          
-        <td style="width:10%"><a href="/see_details/{{$rec_data->id}}" class="btn btn-info"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></td>
+        <td style="width:10%"><a href="{{ url('see-details') }}/{{$rec_data->id}}" class="btn btn-info"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></td>
         {{--<td><a href="/edit/{{$rec_data->id}}" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>--}}
       </tr>
       @endforeach
@@ -90,7 +90,7 @@
                 <span class="slider round"></span>
             </label>
         </td>
-        <td style="width:10%"><a href="/see_details/{{$con_data->id}}" class="btn btn-info"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></td>
+        <td style="width:10%"><a href="{{ url('/') }}/see-details/{{$con_data->id}}" class="btn btn-info"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></td>
         {{--<td><a href="/edit/{{$con_data->id}}" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>--}}
       </tr>
       @endforeach
@@ -106,7 +106,7 @@
 @section('content3')
 
   <h2 align="center">Add Contact</h2>
- <form class="form-horizontal" action="/add_contact_details" enctype="multipart/form-data"  name="add_contact_form" id="edit_contact_form" method="POST">
+ <form class="form-horizontal" action="{{ url('/') }}/add_contact_details" enctype="multipart/form-data"  name="add_contact_form" id="edit_contact_form" method="POST">
     {{ csrf_field() }}
     <div class="form-group">
       <label class="control-label col-sm-2" for="email">Email:</label>
@@ -166,13 +166,13 @@
  <div class="card">
     <div class="card-header"><h2 class="text-center">Email</h2></div>
     <div class="card-body">
-      <form class="form-horizontal" action="/send_mail" enctype="multipart/form-data"  name="send_mail_form" id="send_mail_form" method="POST">
+      <form class="form-horizontal" action="{{ url('/') }}/send_mail" enctype="multipart/form-data"  name="send_mail_form" id="send_mail_form" method="POST">
     {{ csrf_field() }}
     <div class="form-group">
       <label class="control-label col-sm-2" for="email">Email:</label>
       <div class="col-sm-10">
   
-        <input type="email" class="form-control" placeholder="Enter email" name="emailAddress[]" id="emailAddress" >
+        <input type="email" class="form-control" placeholder="Enter email" name="emailAddress" id="emailAddress" >
         
 
       </div>

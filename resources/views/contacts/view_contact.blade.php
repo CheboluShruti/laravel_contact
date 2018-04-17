@@ -127,7 +127,7 @@ section .section-title {
                                     <h4 class="card-title">@if ($edit_data->name!='') {{ $edit_data->name }}  @endif</h4>
                                     <span>@if ($edit_data->email!='') {{ $edit_data->email }}  @endif</span><br><br$>
                                     <span>@if ($edit_data->mobile!='') {{ $edit_data->mobile }}  @endif</span><br>
-                                    <a href="/edit/{{$edit_data->id}}" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a>
+                                    <a href="{{ url('/') }}/edit/{{$edit_data->id}}" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a>
                                     
                                 </div>
                             </div>

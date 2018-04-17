@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use DB;
 use App\Contact;
-//use App\Mail\Welcome;
-///use Mail;
-use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
+use DB;
+use FarhanWazir\GoogleMaps\GMaps;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Socialite\Facades\Socialite;
+
+
 //use Illuminate\Support\Carbon;
 //use Validator;
 
 class ContactsController extends Controller
 {
+  protected $gmap;
+
+    public function __construct(GMaps $gmap){
+        $this->gmap = $gmap;
+    }
    public function index()
    {
 
@@ -29,12 +37,14 @@ class ContactsController extends Controller
    public function edit_contact($contactID)
    {
    		$edit_data = DB::table('contacts')->find($contactID);
+     // dd($edit_data);
    		return view ('contacts.edit',compact('edit_data'));
    }
 
    public function view_contact($cID)
    {
-      $edit_data = DB::table('contacts')->find($cID);
+     $edit_data = DB::table('contacts')->find($cID);
+        //dd('Hii');
          return view ('contacts.view_contact',compact('edit_data'));
    }
 
@@ -175,5 +185,206 @@ class ContactsController extends Controller
     }
    }
 
+   public function map_view_page()
+{
+  Mapper::map(0, 0,
+        [
+            'zoom' => 20,
+            'draggable' => true,
+            'marker' => true,
+            'center' => false,
+            'markers' => ['title' => 'sgs!', 'animation' => 'DROP'],
+            
+        ]);
+
+$markers = [
+    ['lat' => 17.385044,  'lng' => 78.486671],
+    ['lat' => 22.572646, 'lng' => 88.363895],
+    ['lat' => 51.507351, 'lng' => -0.127758],
+    ['lat' => 38.907192, 'lng' => -77.036871]
+];
+
+foreach ($markers as $marker) {
+    Mapper::marker($marker['lat'], $marker['lng']);
+}
+
+//Mapper::location('Sheffield')->map(['zoom' => 18, 'center' => true, 'eventAfterLoad' => 'onMapLoad(maps[0].map);']);
+
+    return view('map');
+}
+
+
+
+public function geomap()
+{
+  return view('gmap');
+}
+
+public function google_map()
+{
+
+        $leftTopControls = ['document.getElementById("leftTopControl")']; // values must be html or javascript element
+        $this->gmap->injectControlsInLeftTop = $leftTopControls; // inject into map
+        $leftCenterControls = ['document.getElementById("leftCenterControl")'];
+        $this->gmap->injectControlsInLeftCenter = $leftCenterControls;
+        $leftBottomControls = ['document.getElementById("leftBottomControl")'];
+        $this->gmap->injectControlsInLeftBottom = $leftBottomControls;
+
+        $bottomLeftControls = ['document.getElementById("bottomLeftControl")'];
+        $this->gmap->injectControlsInBottomLeft = $bottomLeftControls;
+        $bottomCenterControls = ['document.getElementById("bottomCenterControl")'];
+        $this->gmap->injectControlsInBottomCenter = $bottomCenterControls;
+        $bottomRightControls = ['document.getElementById("bottomRightControl")'];
+        $this->gmap->injectControlsInBottomRight = $bottomRightControls;
+
+        $rightTopControls = ['document.getElementById("rightTopControl")'];
+        $this->gmap->injectControlsInRightTop = $rightTopControls;
+        $rightCenterControls = ['document.getElementById("rightCenterControl")'];
+        $this->gmap->injectControlsInRightCenter = $rightCenterControls;
+        $rightBottomControls = ['document.getElementById("rightBottomControl")'];
+        $this->gmap->injectControlsInRightBottom = $rightBottomControls;
+
+        $topLeftControls = ['document.getElementById("topLeftControl")'];
+        $this->gmap->injectControlsInTopLeft = $topLeftControls;
+        $topCenterControls = ['document.getElementById("topCenterControl")'];
+        $this->gmap->injectControlsInTopCenter = $topCenterControls;
+        $topRightControls = ['document.getElementById("topRightControl")'];
+        $this->gmap->injectControlsInTopRight = $topRightControls;
+
+        /******** End Controls ********/
+
+        $config = array();
+        $config['map_height'] = "50%";
+        $config['map_width'] = "50%";
+        
+
+$config['center'] = 'auto';
+$config['onboundschanged'] = 'if (!centreGot) {
+  var mapCentre = map.getCenter();
+
+  marker_0.setOptions({
+    position: new google.maps.LatLng(mapCentre.lat(), mapCentre.lng()) 
+
+
+  });
+}
+centreGot = true;
+';
+       
+        $config['places'] = TRUE;
+        $config['placesAutocompleteInputID'] = 'myPlaceTextBox';
+        
+       $config['placesAutocompleteOnChange'] = '
+
+            var placelat = event.latLng.lat();
+            var placelng = event.latLng.lng();
+            $("#placelat").val(placelat);
+            $("#placelng").val(placelng);       
+         ';
+
+        $this->gmap->initialize($config); // Initialize Map with custom configuration
+
+        // set up the marker ready for positioning
+        $marker = array();
+        $marker['position'] = 'center';
+        $marker['draggable'] = true;
+        $marker['animation'] = 'DROP';
+        //$marker['icon_size'] = '50,50';
+        $marker['icon'] = url('/').'/uploads/ddd/map_marker2.png';
+        
+        /*$marker['ondragend'] = '
+        iw_'. $this->gmap->map_name .'.close();
+        reverseGeocode(event.latLng, function(status, result, mark){
+            if(status == 200){
+                iw_'. $this->gmap->map_name .'.setContent(result);
+                iw_'. $this->gmap->map_name .'.open('. $this->gmap->map_name .', mark);
+            }
+        }, this);
+        ';*/
+        $this->gmap->add_marker($marker);
+        
+
+        $map = $this->gmap->create_map(); // This object will render javascript files and map view; you can call JS by $map['js'] and map view by $map['html']
+
+        return view('google_map', ['map' => $map]);
+}
+
+
+      public function ajax_find_place(Request $request)
+      {
+        $PlaceName = $request->input('PlaceName');
+        $placelat = $request->input('placelat');
+        $placelng = $request->input('placelng');
+
+       // dd($PlaceName);
+        $config = array();
+        $config['center'] = $PlaceName;
+        $config['zoom'] = '14';
+       $config['places'] = TRUE;
+        $config['placesLocation'] = "$placelat, $placelng";
+       $config['placesRadius'] = 5000; 
+        
+      
+
+        $this->gmap->initialize($config); // Initialize Map with custom configuration
+
+        // set up the marker ready for positioning
+       $marker = array();
+
+        $marker['position'] = $PlaceName;
+        $marker['draggable'] = true;
+        $marker['animation'] = 'DROP';
+        //$marker['icon_size'] = '50,50';
+        $marker['icon'] = url('/').'/uploads/ddd/map_marker2.png';
+        
+        /*$marker['ondragend'] = '
+        iw_'. $this->gmap->map_name .'.close();
+        reverseGeocode(event.latLng, function(status, result, mark){
+            if(status == 200){
+                iw_'. $this->gmap->map_name .'.setContent(result);
+                iw_'. $this->gmap->map_name .'.open('. $this->gmap->map_name .', mark);
+            }
+        }, this);
+        ';*/
+
+        $this->gmap->add_marker($marker);
+
+        $circle = array();
+        $circle['center'] = $PlaceName;
+        $circle['radius'] = '5000';
+         $this->gmap->add_circle($circle);
+
+
+
+
+
+        //DB::table('users')->whereBetween('votes', [1, 100])->get();
+        
+
+        $map = $this->gmap->create_map(); // This object will render javascript files and map view; you can call JS by $map['js'] and map view by $map['html']
+
+       
+        
+        return view('google_map_ajax', ['map' =>$map]);
+      }
+
+
+
+      public function redirectToProvider()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('google')->stateless()->user();
+
+        return $user->token;
+    }
 
 }

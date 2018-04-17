@@ -20,7 +20,7 @@
 	<div class="col-md-3"></div>
 		<div class="col-md-6">
       <h2 align="center">Edit Contact</h2>
-	 <form class="form-horizontal" action="/edit_contact_details" enctype="multipart/form-data"  name="edit_contact_form" id="edit_contact_form" method="POST">
+	 <form class="form-horizontal" action="{{ url('/') }}/edit_contact_details" enctype="multipart/form-data"  name="edit_contact_form" id="edit_contact_form" method="POST">
 	 	{{ csrf_field() }}
     <div class="form-group">
       <label class="control-label col-sm-2" for="email">Email:</label>
